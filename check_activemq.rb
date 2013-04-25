@@ -306,7 +306,6 @@ def queue_send_receive(options)
     Timeout::timeout(2) do
       stomp = Stomp::Client.new(config)
       stomp.publish(queue, "Nagios Test: #{now}")
-      stomp.publish(queue, "Nagios Test2: #{now}")
       stomp.close
     end
   rescue Timeout::Error
