@@ -398,11 +398,11 @@ if state > overall_state then
   overall_msg   += msg
 end
 
-if overall_state = STATETOINT['OK'] then
+if overall_state == STATETOINT['OK'] then
   overall_msg = 'OK: All topics and queues within thresholds'
-elsif overall_state = STATETOINT['WARNING'] then
+elsif overall_state == STATETOINT['WARNING'] then
   overall_msg = "WARNING: #{overall_msg}"
-elsif overall_state = STATETOINT['CRITICAL'] then
+elsif overall_state == STATETOINT['CRITICAL'] then
   overall_msg = "CRITICAL: #{overall_msg}"
 end
 
