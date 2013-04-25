@@ -394,7 +394,7 @@ end
 
 state,msg = queue_send_receive(options)
 if state > overall_state then
-  msg.overall_state = state
+  overall_state = state
   overall_msg   += msg
 end
 
