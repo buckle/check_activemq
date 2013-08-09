@@ -33,9 +33,9 @@ STATETOINT = {
 
 # Display verbose output (if being run by a human for example).
 def say (v, msg)
-  #if v == true
+  if v == true
     puts '+ %s' % [msg]
-  #end
+  end
 end
 
 # Manage the exit code explicitly.
