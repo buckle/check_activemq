@@ -33,9 +33,9 @@ STATETOINT = {
 
 # Display verbose output (if being run by a human for example).
 def say (v, msg)
-  if v == true
+  #if v == true
     puts '+ %s' % [msg]
-  end
+  #end
 end
 
 # Manage the exit code explicitly.
@@ -299,13 +299,17 @@ def queue_send_receive(options)
   }
   queue = "/queue/#{options[:nagiosqueue]}"
 
-  nagios_msg = ''
-  state = STATETOINT['OK']
+  say(options[:v], "Checking ability to send/receive via nagios queue")
+
   now = DateTime.now.to_s
+
+  nagios_msg = ''
+  test_msg = "Nagios Test: #{now}" 
+  state = STATETOINT['OK']
   begin
     Timeout::timeout(2) do
       stomp = Stomp::Client.new(config)
-      stomp.publish(queue, "Nagios Test: #{now}")
+      stomp.publish(queue, test_msg)
       stomp.close
     end
   rescue Timeout::Error
@@ -316,9 +320,13 @@ def queue_send_receive(options)
   client = nil
   begin
     Timeout::timeout(2) do
-    client = Stomp::Connection.new(config)
-    client.subscribe(queue)
-    msg = client.receive
+      client = Stomp::Connection.new(config)
+      client.subscribe(queue)
+      msg = client.receive
+      if msg.body != test_msg
+        nagios_msg = "Failed to send/receive message successfully"
+        state = STATETOINT['CRITICAL']
+      end
     end
   rescue Timeout::Error
     nagios_msg = "Failed to receive message within the 2 second timeout"
