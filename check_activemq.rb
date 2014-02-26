@@ -201,8 +201,8 @@ def parse_args(options)
     end
 
     options[:port] = 61613
-    opts.on('-p', '--port', 'Broker port') do |x|
-      options[:port] = x
+    opts.on('-p', '--port PORT', 'Broker port') do |x|
+      options[:port] = x.to_i
     end
 
 
